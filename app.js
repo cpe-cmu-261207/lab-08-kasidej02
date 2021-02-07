@@ -30,7 +30,7 @@ function GPAcal(){
     }
   
   },{gpa:0,credit:0})
-  myCourses.gpax = (gpax.gpa / gpax.credit).toFixed(2)
+  myCourses.gpax = Number((gpax.gpa / gpax.credit).toFixed(2))
 }
 
 //GET ดึงข้อมูลมาทั้งหมด 
@@ -68,6 +68,9 @@ app.delete('/courses/:id', (req,res) =>{
   }else{
     myCourses.courses.splice(deletedIndex,1)
     GPAcal()
+    if(myCourses.courses.length === 0){
+      myCourses.gpax = 0;
+    }
     res.json({
     success: true,
     data: myCourses
@@ -96,6 +99,6 @@ app.post('/addCourse' , (req,res) => {
 
 //follow instruction in http://localhost:8000/
 
-
+//
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`server started on port:${port}`));
