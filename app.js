@@ -68,6 +68,7 @@ app.delete('/courses/:id', (req,res) =>{
   }else{
     myCourses.courses.splice(deletedIndex,1)
     GPAcal()
+    fs.writeFileSync('./myCourses.json',JSON.stringify(myCourses,null,4)) 
     res.json({
     success: true,
     data: myCourses
@@ -86,6 +87,7 @@ app.post('/addCourse' , (req,res) => {
   }else{
     myCourses.courses.push(req.body)
     GPAcal()
+    fs.writeFileSync('./myCourses.json',JSON.stringify(myCourses,null,4))
     res.status(201).json({
       success: true,
       data: req.body
