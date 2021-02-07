@@ -33,7 +33,7 @@ function GPAcal(){
   myCourses.gpax = (gpax.gpa / gpax.credit).toFixed(2)
 }
 
-//GET ดึงข้อมูลมาทั้งหมด //:)
+//GET ดึงข้อมูลมาทั้งหมด 
 app.get('/courses', (req,res) => {
     return res.json({
     success: true,
