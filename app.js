@@ -16,6 +16,23 @@ app.get("/", (req, res) => {
 //implement your api here
 const myCourses = require('./myCourses.json')
 
+//CALCULATE GPA
+function GPAcal(){
+  let gpax = myCourses.courses.map(courses => {
+    return {
+      gpa : Number(courses.gpa) * Number(courses.credit),
+      credit : Number(courses.credit)
+    }
+  }).reduce((sum,courses)=>{
+    return{
+      gpa: courses.gpa + sum.gpa,
+      credit : courses.credit + sum.credit
+    }
+  
+  },{gpa:0,credit:0})
+  myCourses.gpax = (gpax.gpa / gpax.credit).toFixed(2)
+}
+
 //GET ดึงข้อมูลมาทั้งหมด
 app.get('/courses', (req,res) => {
     return res.json({
@@ -43,13 +60,14 @@ app.get('/courses/:id', (req, res) => {
 // DELETE 
 app.delete('/courses/:id', (req,res) =>{
   const deletedIndex = myCourses.courses.findIndex(courses => courses.courseId === +req.params.id)
-  if(deletedIndex === -1){
+  if(deletedIndex === -1 ){
     return res.json({
       success: false,
       data: myCourses
     })
   }else{
     myCourses.courses.splice(deletedIndex,1)
+    GPAcal()
     res.json({
     success: true,
     data: myCourses
@@ -60,7 +78,6 @@ app.delete('/courses/:id', (req,res) =>{
 //POST
 app.post('/addCourse' , (req,res) => {
   const parserObject = Object.keys(req.body)
-
   if(parserObject.length != 4){
     return res.status(422).json({
       success: false,
@@ -68,6 +85,7 @@ app.post('/addCourse' , (req,res) => {
     })
   }else{
     myCourses.courses.push(req.body)
+    GPAcal()
     res.status(201).json({
       success: true,
       data: req.body
@@ -75,7 +93,9 @@ app.post('/addCourse' , (req,res) => {
   }
 })
 
+
 //follow instruction in http://localhost:8000/
+
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`server started on port:${port}`));
