@@ -30,7 +30,7 @@ function GPAcal(){
     }
   
   },{gpa:0,credit:0})
-  myCourses.gpax = (gpax.gpa / gpax.credit).toFixed(2)
+  myCourses.gpax = Number((gpax.gpa / gpax.credit).toFixed(2))
 }
 
 //GET ดึงข้อมูลมาทั้งหมด
